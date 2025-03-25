@@ -88,3 +88,8 @@ function displayProducts() {
         productList.appendChild(div);
     });
 }
+
+function editProduct(productId) {
+    localStorage.setItem('editProductId', productId);
+    window.location.href = 'add_product.html';
+}
