@@ -21,6 +21,7 @@ function navtoAddProduct() {
     window.location.href = 'add_product.html';
 }
 
+// Save or Update a Product
 function saveNewProduct() {
     let productId = document.getElementById('productId').value || generateProductId();
     let productName = document.getElementById('productName').value;
@@ -89,11 +90,13 @@ function displayProducts() {
     });
 }
 
+// Edit Product
 function editProduct(productId) {
     localStorage.setItem('editProductId', productId);
     window.location.href = 'add_product.html';
 }
 
+// Populate Fields in Add Product Page when Editing
 function fillFields() {
     let productId = localStorage.getItem('editProductId');
     if (productId) {
@@ -111,6 +114,7 @@ function fillFields() {
     }
 }
 
+// Delete Product
 function deleteProduct(productId) {
     let confirmDelete = confirm("Are you sure you want to delete this product?");
     if (confirmDelete) {
@@ -120,6 +124,7 @@ function deleteProduct(productId) {
     }
 }
 
+// Filter & Sort Products
 function filterAndDisplay() {
     let query = document.getElementById('filterInput').value.toLowerCase();
     let sortCriteria = document.getElementById('sortSelect').value;
@@ -152,17 +157,17 @@ function filterAndDisplay() {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-sm-6 mb-3';
         div.innerHTML = `
-              <div class="card">
-                  <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 200px; object-fit: cover;">
-                  <div class="card-body text-center">
-                      <h5 class="card-title">${product.ProductName}</h5>
-                      <p class="card-text">Price: ${product.Price}</p>
-                      <p class="card-text">${product.Description}</p>
-                      <button class="btn btn-warning" onclick="editProduct('${product.ProductId}')">Edit</button>
-                      <button class="btn btn-danger" onclick="deleteProduct('${product.ProductId}')">Delete</button>
-                  </div>
-              </div>
-          `;
+            <div class="card">
+                <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">${product.ProductName}</h5>
+                    <p class="card-text">Price: ${product.Price}</p>
+                    <p class="card-text">${product.Description}</p>
+                    <button class="btn btn-warning" onclick="editProduct('${product.ProductId}')">Edit</button>
+                    <button class="btn btn-danger" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+                </div>
+            </div>
+        `;
         row.appendChild(div);
     });
 
