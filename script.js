@@ -119,3 +119,24 @@ function deleteProduct(productId) {
         alert('Product Deleted Successfully');
     }
 }
+
+function filterAndDisplay() {
+    let query = document.getElementById('filterInput').value.toLowerCase();
+    let sortCriteria = document.getElementById('sortSelect').value;
+    let products = getProducts();
+
+    // Filter products based on Name or Description
+    let filteredProducts = products.filter(product =>
+        product.ProductName.toLowerCase().includes(query) ||
+        product.Description.toLowerCase().includes(query)
+    );
+
+    // Sorting logic
+    filteredProducts.sort((a, b) => {
+        if (sortCriteria === 'Price') {
+            return a.Price - b.Price;
+        } else if (sortCriteria === 'ProductName') {
+            return a.ProductName.localeCompare(b.ProductName);
+        }
+        return 0;
+    });
