@@ -12,12 +12,16 @@
   <body onload="displayProducts()">
     <div class="container mt-4">
       <div class="card p-3 text-center">
-        <h4 class="text-center">Product Management System</h4>
+        <h3 class="text-center">Product Management System</h3>
       </div>
 
       <!-- Buttons -->
       <div class="text-center my-3">
-        <button class="btn btn-primary w-100" onclick="navtoAddProduct()">
+        <button
+          class="btn btn-primary w-100"
+          onclick="navtoAddProduct()"
+          aria-label="Add a new product"
+        >
           Add Product
         </button>
       </div>
@@ -29,8 +33,9 @@
             type="text"
             id="filterInput"
             class="form-control"
-            placeholder="Filter by Name/Description"
+            placeholder="Filter by Name or Description"
             onkeyup="filterAndDisplay()"
+            aria-describedby="filterHelp"
           />
         </div>
         <div class="col-md-6">
@@ -38,6 +43,7 @@
             id="sortSelect"
             class="form-control"
             onchange="filterAndDisplay()"
+            aria-label="Sort products by price or name"
           >
             <option value="">Sort By</option>
             <option value="Price">Price</option>
@@ -47,8 +53,9 @@
       </div>
 
       <!-- Product List -->
-
-      <div id="productList" class="row"></div>
+      <section id="productList" class="row" aria-live="polite">
+        <!-- Products will be dynamically added here -->
+      </section>
     </div>
 
     <script src="script.js"></script>

@@ -13,30 +13,61 @@
     <div class="container mt-5">
       <div class="card p-4">
         <h4 class="text-center">Add / Edit Product</h4>
+
+        <!-- Hidden input to store product ID -->
         <input type="hidden" id="productId" />
 
-        <label>Product Name:</label>
-        <input type="text" id="productName" class="form-control mb-2" />
+        <!-- Product Name Input -->
+        <label for="productName">Product Name:</label>
+        <input
+          type="text"
+          id="productName"
+          class="form-control mb-2"
+          aria-label="Product Name"
+        />
 
-        <label>Price:</label>
-        <input type="number" id="productPrice" class="form-control mb-2" />
+        <!-- Product Price Input -->
+        <label for="productPrice">Price:</label>
+        <input
+          type="number"
+          id="productPrice"
+          class="form-control mb-2"
+          aria-label="Product Price"
+        />
 
-        <label>Description:</label>
-        <textarea id="productDescription" class="form-control mb-2"></textarea>
+        <!-- Product Description Input -->
+        <label for="productDescription">Description:</label>
+        <textarea
+          id="productDescription"
+          class="form-control mb-2"
+          aria-label="Product Description"
+        ></textarea>
 
-        <label>Image:</label>
-        <input type="file" id="imageInput" class="form-control mb-2" />
+        <!-- Product Image Input -->
+        <label for="imageInput">Image:</label>
+        <input
+          type="file"
+          id="imageInput"
+          class="form-control mb-2"
+          aria-label="Product Image Upload"
+        />
+
+        <!-- Display Existing Image -->
         <img
           id="existingImage"
           src=""
           class="mt-2"
           style="width: 100px; height: 100px; display: none"
+          alt="Selected product image"
+          aria-hidden="true"
         />
 
+        <!-- Save Button -->
         <button
           id="saveButton"
           class="btn btn-success mt-3 w-100"
           onclick="saveNewProduct()"
+          aria-label="Save Product"
         >
           Save Product
         </button>
