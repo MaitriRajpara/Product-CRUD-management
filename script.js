@@ -140,3 +140,31 @@ function filterAndDisplay() {
         }
         return 0;
     });
+
+    // Display filtered and sorted products
+    let productList = document.getElementById('productList');
+    productList.innerHTML = '';
+
+    let row = document.createElement('div');
+    row.className = 'row';
+
+    filteredProducts.forEach(product => {
+        let div = document.createElement('div');
+        div.className = 'col-lg-3 col-md-4 col-sm-6 mb-3';
+        div.innerHTML = `
+              <div class="card">
+                  <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 200px; object-fit: cover;">
+                  <div class="card-body text-center">
+                      <h5 class="card-title">${product.ProductName}</h5>
+                      <p class="card-text">Price: ${product.Price}</p>
+                      <p class="card-text">${product.Description}</p>
+                      <button class="btn btn-warning" onclick="editProduct('${product.ProductId}')">Edit</button>
+                      <button class="btn btn-danger" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+                  </div>
+              </div>
+          `;
+        row.appendChild(div);
+    });
+
+    productList.appendChild(row);
+}
