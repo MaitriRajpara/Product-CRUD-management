@@ -93,3 +93,20 @@ function editProduct(productId) {
     localStorage.setItem('editProductId', productId);
     window.location.href = 'add_product.html';
 }
+
+function fillFields() {
+    let productId = localStorage.getItem('editProductId');
+    if (productId) {
+        let products = getProducts();
+        let product = products.find(p => p.ProductId === productId);
+        if (product) {
+            document.getElementById('productId').value = product.ProductId;
+            document.getElementById('productName').value = product.ProductName;
+            document.getElementById('productPrice').value = product.Price;
+            document.getElementById('productDescription').value = product.Description;
+            document.getElementById('existingImage').src = product.Image;
+            document.getElementById('saveButton').innerText = "Save Changes";
+        }
+        localStorage.removeItem('editProductId');
+    }
+}
