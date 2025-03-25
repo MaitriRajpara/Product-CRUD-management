@@ -110,3 +110,12 @@ function fillFields() {
         localStorage.removeItem('editProductId');
     }
 }
+
+function deleteProduct(productId) {
+    let confirmDelete = confirm("Are you sure you want to delete this product?");
+    if (confirmDelete) {
+        let products = getProducts().filter(p => p.ProductId !== productId);
+        saveProducts(products);
+        alert('Product Deleted Successfully');
+    }
+}
