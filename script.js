@@ -1,3 +1,26 @@
+const PRODUCTS_KEY = 'products';
+
+// Get products from localStorage
+function getProducts() {
+    return JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+}
+
+// Save products to localStorage
+function saveProducts(products) {
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+    displayProducts();
+}
+
+// Generate a unique Product ID
+function generateProductId() {
+    return crypto.randomUUID();
+}
+
+// Navigate to Add Product Page
+function navtoAddProduct() {
+    window.location.href = 'add_product.html';
+}
+
 function saveNewProduct() {
     let productId = document.getElementById('productId').value || generateProductId();
     let productName = document.getElementById('productName').value;
