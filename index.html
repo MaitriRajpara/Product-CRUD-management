@@ -8,34 +8,32 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body onload="displayProducts()">
-    <div class="container mt-4">
-      <div class="card p-3 text-center">
-        <h3 class="text-center">Product Management System</h3>
-      </div>
+  <body onload="displayProducts()" class="border-black">
+    <div class="container mt-2">
+      <div
+        class="card p-3 text-center d-flex flex-row justify-content-between align-items-center"
+      >
+        <h4 class="text-center text-primary">ManageX</h4>
 
-      <!-- Buttons -->
-      <div class="text-center my-3">
-        <button
-          class="btn btn-primary w-100"
-          onclick="navtoAddProduct()"
-          aria-label="Add a new product"
-        >
-          Add Product
-        </button>
+        <!-- Buttons -->
+        <div class="text-center">
+          <button class="btn btn-primary w-100" onclick="navtoAddProduct()">
+            Add Product
+          </button>
+        </div>
       </div>
 
       <!-- Filter & Sort -->
-      <div class="row mb-3">
+      <div class="row mb-3 mt-3">
         <div class="col-md-6">
           <input
             type="text"
             id="filterInput"
             class="form-control"
-            placeholder="Filter by Name or Description"
+            placeholder="Filter by Name/Description"
             onkeyup="filterAndDisplay()"
-            aria-describedby="filterHelp"
           />
         </div>
         <div class="col-md-6">
@@ -43,7 +41,6 @@
             id="sortSelect"
             class="form-control"
             onchange="filterAndDisplay()"
-            aria-label="Sort products by price or name"
           >
             <option value="">Sort By</option>
             <option value="Price">Price</option>
@@ -53,9 +50,8 @@
       </div>
 
       <!-- Product List -->
-      <section id="productList" class="row" aria-live="polite">
-        <!-- Products will be dynamically added here -->
-      </section>
+      <div class="card text-center mb-3 p-2"><h5>Product List</h5></div>
+      <div id="productList" class="row"></div>
     </div>
 
     <script src="script.js"></script>
