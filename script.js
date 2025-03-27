@@ -16,6 +16,11 @@ function generateProductId() {
     return crypto.randomUUID();
 }
 
+// Navigate back to product List
+function goBackToProducts() {
+    window.location.href = 'index.html';
+}
+
 // Navigate to Add Product Page
 function navtoAddProduct() {
     window.location.href = 'add_product.html';
@@ -23,35 +28,48 @@ function navtoAddProduct() {
 
 // Save or Update a Product
 function saveNewProduct() {
-    let productId = document.getElementById('productId').value || generateProductId();
-    let productName = document.getElementById('productName').value;
-    let productPrice = document.getElementById('productPrice').value;
-    let productDescription = document.getElementById('productDescription').value;
+    let productId = document.getElementById('productId').value;
+    let productName = document.getElementById('productName').value.trim();
+    let productPrice = document.getElementById('productPrice').value.trim();
+    let productDescription = document.getElementById('productDescription').value.trim();
     let imageInput = document.getElementById('imageInput').files[0];
+    let existingImage = document.getElementById('existingImage').src;
+
+    // Check if product price is a valid number
+    if (isNaN(productPrice) || productPrice === '') {
+        alert('Please enter a valid numeric value for the price.');
+        return;
+    }
 
     if (productName && productPrice && productDescription) {
         let reader = new FileReader();
         reader.onload = function (e) {
-            let newProduct = {
-                ProductId: productId,
-                ProductName: productName,
-                Price: Number(productPrice),
-                Description: productDescription,
-                Image: e.target.result || document.getElementById('existingImage').src
-            };
-
             let products = getProducts();
             let existingIndex = products.findIndex(p => p.ProductId === productId);
 
             if (existingIndex !== -1) {
-                products[existingIndex] = newProduct;
+                // Update existing product
+                products[existingIndex].ProductName = productName;
+                products[existingIndex].Price = Number(productPrice);
+                products[existingIndex].Description = productDescription;
+                products[existingIndex].Image = imageInput ? e.target.result : existingImage;
+
+                alert('Product Updated Successfully');
             } else {
+                // Add new product
+                let newProduct = {
+                    ProductId: productId || generateProductId(),
+                    ProductName: productName,
+                    Price: Number(productPrice),
+                    Description: productDescription,
+                    Image: imageInput ? e.target.result : existingImage
+                };
                 products.push(newProduct);
                 alert('Product Added Successfully');
             }
 
             saveProducts(products);
-            alert('Done Successfully');
+            localStorage.removeItem('editProductId'); // Remove edit mode after save
             window.location.href = 'index.html';
         };
 
@@ -61,9 +79,10 @@ function saveNewProduct() {
             reader.onload();
         }
     } else {
-        alert('Please fill all fields and select an image');
+        alert('Please fill all fields');
     }
 }
+
 
 // Display Products
 function displayProducts() {
@@ -75,14 +94,17 @@ function displayProducts() {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-sm-6 mb-3';
         div.innerHTML = `
-            <div class="card">
-                <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 200px; object-fit: cover;">
-                <div class="card-body text-center">
-                    <h5 class="card-title">${product.ProductName}</h5>
-                    <p class="card-text">Price: ${product.Price}</p>
-                    <p class="card-text">${product.Description}</p>
-                    <button class="btn btn-warning" onclick="editProduct('${product.ProductId}')">Edit</button>
-                    <button class="btn btn-danger" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+            <div class="card" >
+                <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 180px; object-fit: cover;">
+                <div class="card-body text-center" style="height: 180px">
+                    <p class="card card-title">${product.ProductName}</p>
+                    <p class="">Price: ${product.Price}</p>
+                    <p class="">${product.Description}</p>
+                    <div class="d-flex flex-row gap-4">
+                    <button class="btn btn-warning w-50" onclick="editProduct('${product.ProductId}')">Edit</button>
+                    <button class="btn btn-danger w-50" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+                    </div>
+                    
                 </div>
             </div>
         `;
@@ -109,6 +131,9 @@ function fillFields() {
             document.getElementById('productDescription').value = product.Description;
             document.getElementById('existingImage').src = product.Image;
             document.getElementById('saveButton').innerText = "Save Changes";
+            let imageElement = document.getElementById('existingImage');
+            imageElement.src = product.Image;
+            imageElement.style.display = "block";
         }
         localStorage.removeItem('editProductId');
     }
@@ -157,14 +182,16 @@ function filterAndDisplay() {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-sm-6 mb-3';
         div.innerHTML = `
-            <div class="card">
-                <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 200px; object-fit: cover;">
-                <div class="card-body text-center">
-                    <h5 class="card-title">${product.ProductName}</h5>
-                    <p class="card-text">Price: ${product.Price}</p>
-                    <p class="card-text">${product.Description}</p>
-                    <button class="btn btn-warning" onclick="editProduct('${product.ProductId}')">Edit</button>
-                    <button class="btn btn-danger" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+            <div class="card" >
+                <img src="${product.Image}" class="card-img-top" alt="${product.ProductName}" style="height: 180px; object-fit: cover;">
+                <div class="card-body text-center" style="height: 180px">
+                    <p class="card">${product.ProductName}</p>
+                    <p class="price">Price: ${product.Price}</p>
+                    <p class="desc">${product.Description}</p>
+                    <div class="d-flex flex-row gap-4">
+                    <button class="btn btn-warning w-50" onclick="editProduct('${product.ProductId}')">Edit</button>
+                    <button class="btn btn-danger w-50" onclick="deleteProduct('${product.ProductId}')">Delete</button>
+                    </div> 
                 </div>
             </div>
         `;
