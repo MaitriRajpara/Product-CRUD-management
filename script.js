@@ -26,8 +26,13 @@ function navtoAddProduct() {
     window.location.href = 'add_product.html';
 }
 
-// Save or Update a Product
 function saveNewProduct() {
+    // Clear previous error messages
+    document.getElementById('nameError').textContent = "";
+    document.getElementById('priceError').textContent = "";
+    document.getElementById('descriptionError').textContent = "";
+    document.getElementById('imageError').textContent = "";
+
     let productId = document.getElementById('productId').value;
     let productName = document.getElementById('productName').value.trim();
     let productPrice = document.getElementById('productPrice').value.trim();
@@ -35,52 +40,82 @@ function saveNewProduct() {
     let imageInput = document.getElementById('imageInput').files[0];
     let existingImage = document.getElementById('existingImage').src;
 
-    // Check if product price is a valid number
-    if (isNaN(productPrice) || productPrice === '') {
-        alert('Please enter a valid numeric value for the price.');
-        return;
+    let hasError = false;
+
+    if (!productName) {
+        document.getElementById('nameError').textContent = "Product name is required.";
+        hasError = true;
     }
 
-    if (productName && productPrice && productDescription) {
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            let products = getProducts();
-            let existingIndex = products.findIndex(p => p.ProductId === productId);
+    if (!productPrice || isNaN(productPrice) || Number(productPrice) <= 0) {
+        document.getElementById('priceError').textContent = "Enter a valid positive price.";
+        hasError = true;
+    }
 
-            if (existingIndex !== -1) {
-                // Update existing product
-                products[existingIndex].ProductName = productName;
-                products[existingIndex].Price = Number(productPrice);
-                products[existingIndex].Description = productDescription;
-                products[existingIndex].Image = imageInput ? e.target.result : existingImage;
+    if (!productDescription) {
+        document.getElementById('descriptionError').textContent = "Description cannot be empty.";
+        hasError = true;
+    }
 
-                alert('Product Updated Successfully');
-            } else {
-                // Add new product
-                let newProduct = {
-                    ProductId: productId || generateProductId(),
-                    ProductName: productName,
-                    Price: Number(productPrice),
-                    Description: productDescription,
-                    Image: imageInput ? e.target.result : existingImage
-                };
-                products.push(newProduct);
-                alert('Product Added Successfully');
-            }
+    if (!imageInput && !existingImage) {
+        document.getElementById('imageError').textContent = "Please upload an image.";
+        hasError = true;
+    }
 
-            saveProducts(products);
-            localStorage.removeItem('editProductId'); // Remove edit mode after save
-            window.location.href = 'index.html';
-        };
+    if (hasError) return; // Stop execution if validation fails
 
-        if (imageInput) {
-            reader.readAsDataURL(imageInput);
+    let reader = new FileReader();
+    reader.onload = function (e) {
+        let products = getProducts();
+        let existingIndex = products.findIndex(p => p.ProductId === productId);
+
+        if (existingIndex !== -1) {
+            // Update existing product
+            products[existingIndex].ProductName = productName;
+            products[existingIndex].Price = Number(productPrice);
+            products[existingIndex].Description = productDescription;
+            products[existingIndex].Image = imageInput ? e.target.result : existingImage;
+            clearFields();
+            alert("Product updated successfully!");
         } else {
-            reader.onload();
+            // Add new product
+            let newProduct = {
+                ProductId: productId || generateProductId(),
+                ProductName: productName,
+                Price: Number(productPrice),
+                Description: productDescription,
+                Image: imageInput ? e.target.result : existingImage
+            };
+            products.push(newProduct);
+            clearFields();
+            alert("Product added successfully!");
         }
+
+        saveProducts(products);
+        localStorage.removeItem('editProductId');
+
+    };
+
+    if (imageInput) {
+        reader.readAsDataURL(imageInput);
     } else {
-        alert('Please fill all fields');
+        reader.onload();
     }
+}
+
+// ✅ Function to clear fields after saving
+function clearFields() {
+    document.getElementById('productId').value = "";
+    document.getElementById('productName').value = "";
+    document.getElementById('productPrice').value = "";
+    document.getElementById('productDescription').value = "";
+    document.getElementById('imageInput').value = "";
+    document.getElementById('existingImage').src = "";
+    document.getElementById('existingImage').style.display = "none";
+    document.getElementById('saveButton').innerText = "Save Product";
+
+    // Focus back on the first input field
+    document.getElementById('productName').focus();
 }
 
 
@@ -145,7 +180,6 @@ function deleteProduct(productId) {
     if (confirmDelete) {
         let products = getProducts().filter(p => p.ProductId !== productId);
         saveProducts(products);
-        alert('Product Deleted Successfully');
     }
 }
 

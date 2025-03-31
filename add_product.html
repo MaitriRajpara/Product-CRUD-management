@@ -17,15 +17,19 @@
 
         <label>Product Name:</label>
         <input type="text" id="productName" class="form-control mb-2" />
+        <small id="nameError" class="text-danger"></small>
 
         <label>Price:</label>
         <input type="number" id="productPrice" class="form-control mb-2" />
+        <small id="priceError" class="text-danger"></small>
 
         <label>Description:</label>
         <textarea id="productDescription" class="form-control mb-2"></textarea>
+        <small id="descriptionError" class="text-danger"></small>
 
         <label>Image:</label>
         <input type="file" id="imageInput" class="form-control mb-2" />
+        <small id="imageError" class="text-danger"></small>
         <img
           id="existingImage"
           src=""
